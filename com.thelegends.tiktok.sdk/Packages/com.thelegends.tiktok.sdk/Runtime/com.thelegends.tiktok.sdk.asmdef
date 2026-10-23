@@ -1,0 +1,14 @@
+{
+    "name": "com.thelegends.tiktok.sdk",
+    "rootNamespace": "com.thelegends.tiktok.sdk",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

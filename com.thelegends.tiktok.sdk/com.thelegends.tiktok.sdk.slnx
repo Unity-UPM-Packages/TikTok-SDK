@@ -1,0 +1,5 @@
+﻿<Solution>
+  <Project Path="com.thelegends.tiktok.sdk.csproj" />
+  <Project Path="com.thelegends.tiktok.sdk.Editor.csproj" />
+  <Project Path="com.thelegends.tiktok.sdk.Tests.csproj" />
+</Solution>
