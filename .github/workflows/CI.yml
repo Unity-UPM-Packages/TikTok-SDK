@@ -3,6 +3,12 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Unpublish the current version first, then publish again'
+        type: boolean
+        default: false
 jobs:
   publish:
     name: publish
@@ -28,13 +34,20 @@ jobs:
           NAME=$(node -p "require('./package.json').name")
           VERSION=$(node -p "require('./package.json').version")
           if npm view "$NAME@$VERSION" version > /dev/null 2>&1; then
-            echo "$NAME@$VERSION already published, skipping"
-            echo "exists=true" >> "$GITHUB_OUTPUT"
+            if [ "$FORCE" = "true" ]; then
+              echo "$NAME@$VERSION already published, unpublishing to republish"
+              npm unpublish "$NAME@$VERSION" --force
+              echo "exists=false" >> "$GITHUB_OUTPUT"
+            else
+              echo "$NAME@$VERSION already published, skipping"
+              echo "exists=true" >> "$GITHUB_OUTPUT"
+            fi
           else
             echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
         env:
           NODE_AUTH_TOKEN: ${{ secrets.VERDACCIO_TOKEN }}
+          FORCE: ${{ inputs.force }}
 
       - name: Publish to Verdaccio
         if: steps.check.outputs.exists == 'false'
