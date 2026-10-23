@@ -1,7 +1,7 @@
 {
   "name": "com.thelegends.tiktok.sdk",
-  "displayName": "com.thelegends.tiktok.sdk",
-  "description": "com.thelegends.tiktok.sdk description goes here.",
+  "displayName": "TikTok SDK",
+  "description": "TikTok SDK for Unity",
   "keywords": [],
   "version": "1.7.2",
   "unity": "2021.3",
