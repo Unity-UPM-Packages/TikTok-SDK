@@ -3,7 +3,7 @@
   "displayName": "com.thelegends.tiktok.sdk",
   "description": "com.thelegends.tiktok.sdk description goes here.",
   "keywords": [],
-  "version": "0.0.0",
+  "version": "1.7.2",
   "unity": "2021.3",
   "documentationUrl": "https://github.com/Unity-UPM-Packages/com.thelegends.tiktok.sdk#documentation",
   "changelogUrl": "https://github.com/Unity-UPM-Packages/com.thelegends.tiktok.sdk/releases",
@@ -17,5 +17,9 @@
     "name": "Unity-UPM-Packages",
     "url": "https://github.com/Unity-UPM-Packages"
   },
-  "dependencies": {}
+  "dependencies": {
+    "com.unity.ugui": "1.0.0",
+    "com.unity.nuget.newtonsoft-json": "3.2.0",
+    "com.unity.modules.androidjni": "1.0.0"
+  }
 }

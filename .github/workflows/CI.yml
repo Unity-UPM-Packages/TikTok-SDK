@@ -1,11 +1,11 @@
-name: Release
+name: Publish
 on:
   push:
     branches:
       - master
 jobs:
-  release:
-    name: release
+  publish:
+    name: publish
     runs-on: ubuntu-latest
     env:
       PACKAGE_PATH: com.thelegends.tiktok.sdk/Packages/com.thelegends.tiktok.sdk
@@ -14,39 +14,39 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Semantic release
-        id: semantic
-        uses: cycjimmy/semantic-release-action@v4
-        with:
-          extra_plugins: |
-            @semantic-release/changelog
-            @semantic-release/git
-          branch: master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Setup Node.js
-        if: steps.semantic.outputs.new_release_published == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: '18'
           registry-url: 'https://${{ secrets.VERDACCIO_URL }}'
 
+      # Version is bumped by hand in package.json; skip if it is already on Verdaccio
+      - name: Check version
+        id: check
+        working-directory: ${{ env.PACKAGE_PATH }}
+        run: |
+          NAME=$(node -p "require('./package.json').name")
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view "$NAME@$VERSION" version > /dev/null 2>&1; then
+            echo "$NAME@$VERSION already published, skipping"
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.VERDACCIO_TOKEN }}
+
       - name: Publish to Verdaccio
-        if: steps.semantic.outputs.new_release_published == 'true'
+        if: steps.check.outputs.exists == 'false'
         working-directory: ${{ env.PACKAGE_PATH }}
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.VERDACCIO_TOKEN }}
-          VERDACCIO_URL: ${{ secrets.VERDACCIO_URL }}
 
       - name: Create UPM Branch
-        if: steps.semantic.outputs.new_release_published == 'true'
+        if: steps.check.outputs.exists == 'false'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git subtree split --prefix=${{ env.PACKAGE_PATH }} -b upm
           git push origin upm --force
-
-
-
