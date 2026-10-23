@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dependencies>
+  <androidPackages>
+    <androidPackage spec="androidx.annotation:annotation:1.2.0" />
+    <androidPackage spec="androidx.lifecycle:lifecycle-process:2.3.1" />
+    <androidPackage spec="androidx.lifecycle:lifecycle-common-java8:2.3.1" />
+    <androidPackage spec="com.android.installreferrer:installreferrer:2.2" />
+  </androidPackages>
+</dependencies>
